@@ -1,15 +1,13 @@
 <?php
   $text_block = file_get_contents('textfile.txt');
-  echo 'Unfiltered Text';
-  echo '<br/>';
-  echo '<textarea class="box" cols="170" rows="60" readonly>'.$text_block.'</textarea>';
+
+  drawBlock('Unfiltered Text', $text_block);
   preg_match_all("/(_0x[a-zA-Z0-9]*)/", $text_block, $matches);
   $array = [];
   foreach($matches as $value) {
     $array = array_merge($array, $value);
   }
   $array = array_unique($array);
-  
 
   $substrmatches = [];
   foreach ($array as $key => $value){
@@ -24,8 +22,7 @@
     }
   }
 
-  echo '<br/>Filtered Unique Keys<br/>';
-  echo '<textarea class="box" cols="170" rows="60" readonly>'.arrayString($array).'</textarea>';
+  drawBlock('Filtered Unique Keys', arrayString($array));
 
   foreach ($substrmatches as $key => $value) {
     foreach ($value as $innerValue) {
@@ -33,9 +30,7 @@
       array_unshift($array, $innerValue);
     }
   }
-
-  echo '<br/>Resorted Array</br>';
-  echo '<textarea class="box" cols="170" rows="60" readonly>'.arrayString($array).'</textarea>';
+  drawBlock('Resorted Array', arrayString($array));
   
   $assocArray = [];
   $count = 0;
@@ -56,15 +51,18 @@
     }
   }
 
-  echo '<br/>Added Assoc Keys to Array</br>';
-  echo '<textarea class="box" cols="170" rows="60" readonly>'.arrayString($assocArray).'</textarea>';
+  drawBlock('Added Assoc Keys to Array', arrayString($assocArray));
 
   foreach ($assocArray as $key => $value) {
     $text_block = str_replace($value, $key, $text_block);
   } 
 
-  echo '<br/>Filtered Text</br>';
-  echo '<textarea class="box" cols="170" rows="60" readonly>'.$text_block.'</textarea>';
+  drawBlock('Filtered Text', $text_block);
+
+  function drawBlock ($title, $text) {
+    echo '<h3>'.$title.'</h3>';
+    echo '<textarea class="box" cols="170" rows="60" readonly>'.$text.'</textarea><br/>';
+  }
 
   function arrayString ($array) {
     $arraystring = '';
